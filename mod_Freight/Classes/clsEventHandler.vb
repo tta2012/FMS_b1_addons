@@ -16,7 +16,7 @@ Imports System.Windows.Forms
 Imports System.Diagnostics
 Imports System.IO
 
-' 1st commit from vs201
+' 1st commit from vs2010
 Public Class clsEventHandler
     <DllImport("User32.dll", ExactSpelling:=False, CharSet:=System.Runtime.InteropServices.CharSet.Auto)> _
     Public Shared Function MoveWindow(ByVal hwnd As IntPtr, ByVal x As Integer, ByVal y As Integer, ByVal nWidth As Integer, ByVal nHeight As Integer, ByVal bRepaint As Boolean) As Boolean
