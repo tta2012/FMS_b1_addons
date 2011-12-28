@@ -1,0 +1,41 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+mod_Freight
+</name>
+</assembly>
+<members>
+<member name="P:mod_Freight.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:mod_Freight.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:mod_Freight.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:mod_Freight.clsReportUtilities.CreateJobFolderFile(System.String,System.String,System.String)">
+	<summary>
+ Create Job Folder And File Path To Save the Job File.
+ </summary>
+	<param name="mainFolder">Set the main folder where you want to save your job folder.</param>
+	<param name="jobNo">Set jobno to create as folder name.</param>
+	<param name="pdfFileName">Set your job pdf File Name without extension.</param>
+	<returns> Returns pdfFileName to export PDF. </returns>
+	<remarks></remarks>
+</member><member name="M:mod_Freight.clsReportUtilities.ExportCRToPDF(System.String,mod_Freight.clsReportUtilities.ExportFileType,CrystalDecisions.CrystalReports.Engine.ReportDocument,System.Boolean)">
+	<summary>
+ Export the Job File CrystalReport to PDF 
+ </summary>
+	<param name="filePath">Set specific filepath where you want to save.</param>
+	<param name="fileType">File Type which you want to export.</param>
+	<param name="rptDocument">Report Document Parameter to export the file.</param>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

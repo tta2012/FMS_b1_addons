@@ -1,0 +1,1983 @@
+<?xml version="1.0"?>
+<doc>
+  <assembly>
+    <name>TallComponents.PDF.Rasterizer</name>
+  </assembly>
+  <members>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings">
+      <summary>
+            Encapsulates all settings that control how text is rendered and fonts are substituted.
+            </summary>
+    </member>
+    <member name="E:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.ResolveFont">
+      <summary>
+            This event is raised whenever a PDF font needs to be resolved to a
+            device font.
+            </summary>
+    </member>
+    <member name="E:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.ResolveCMap">
+      <summary>
+            Fired when a CMap need to be resolved.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.FontSearchPath">
+      <summary>
+            A semi-colon separated list of folders to search for font files that are included in the substitution map.
+            or referenced in the ResolveFont event.
+            The folders are searched from left to right until the font file is found.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.FontSubstitutionMap">
+      <summary>
+            This map lets you define which external fonts are used to render fonts that are not embedded.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.CMapFolder">
+      <summary>
+            This string points to the path where the CMaps can be found.
+            CMaps are used when displaying some fonts, mostly Chinese, Japanese or Korean
+            (also known as CJK fonts). The CMaps are part of the zip file you have downloaded
+            from <see href="http://www.tallcomponents.com">our website</see>.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.TextRenderSettings.RenderText">
+      <summary>
+            Controls whether text will be rendered. If set to false, no text
+            will be rendered. The default is true.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ActionRenderSettings">
+      <summary>
+            Encapsulates all settings that control which actions are executed.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ActionRenderSettings.ExecutePageOpenAction">
+      <summary>
+            Execute the Page Open action before rendering. Default is false.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ColorProfile">
+      <summary>
+            ICC Based color profile, used to describe the
+            color profile of the output device during rasterization.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.ColorProfile.#ctor(System.IO.Stream)">
+      <summary>
+            ColorProfile constructor. Reads the ICC Based color profile from stream.
+            The stream can be disposed of after the ColorProfile instance has been created.
+            </summary>
+      <param name="stream">The stream providing the ICC Based color profile.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.GdiRenderSettings">
+      <summary>
+            Encapsulates all settings that control GDI rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.GdiRenderSettings.Synchronized">
+      <summary>
+            Setting Synchronized to true will use a global lock for all GDI calls that get
+            invoked by Page.Draw.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.GdiRenderSettings.WorkAroundClosePathBug">
+      <summary>
+            If set, GDI (sub)paths will be closed by explicitly adding a line to the starting point of a
+            (sub)path. If false, GDI subpaths will be closed via the GDI Path.CloseFigure() call.
+            The default is false.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.LayerCollection">
+      <summary>
+            A collection of layer objects.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.Contains(TallComponents.PDF.Rasterizer.Layer)">
+      <summary>
+            Determine whether an <see cref="T:TallComponents.PDF.Rasterizer.Layer">Layer</see> is in the <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection">LayerCollection</see>.
+            </summary>
+      <param name="layer">The <see cref="T:TallComponents.PDF.Rasterizer.Layer" /> to verify.</param>
+      <returns>True if the <see cref="T:TallComponents.PDF.Rasterizer.Layer" /> is found in this <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection" />, false otherwise.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.IndexOf(TallComponents.PDF.Rasterizer.Layer)">
+      <summary>
+            Searches for the specified <see cref="T:TallComponents.PDF.Rasterizer.Layer">Layer</see> in the <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection">LayerCollection</see>.
+            </summary>
+      <param name="layer">The <see cref="T:TallComponents.PDF.Rasterizer.Layer" /> to locate in the <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection" />.</param>
+      <returns>The zero-based index at which the <see cref="T:TallComponents.PDF.Rasterizer.Layer" /> is found, -1 if not found.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.Clone">
+      <summary>
+            Clones this LayerCollection, and detach it from the original document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.System#ICloneable#Clone">
+      <summary>
+            Clones this LayerCollection, and detach it from the original document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.GetEnumerator">
+      <summary>
+            Implements strong typed IEnumerable&lt;T&gt;.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.LayerCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>
+            Implements IEnumerable.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.LayerCollection.Item(System.Int32)">
+      <summary>
+            Get an <see cref="T:TallComponents.PDF.Rasterizer.Layer">Layer</see> by zero-based index from the <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection">LayerCollection</see>. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.LayerCollection.Count">
+      <summary>
+            Get the number of <see cref="T:TallComponents.PDF.Rasterizer.Layer">Layer</see>s actually contained in the <see cref="T:TallComponents.PDF.Rasterizer.LayerCollection">LayerCollection</see></summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.PdfException">
+      <summary>
+            Base class for all exceptions thrown from TallComponents components.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PdfException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            For serializing purposes only.
+            </summary>
+      <param name="info">The serialization info.</param>
+      <param name="context">The streaming context.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PdfException.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+             For serializing purposes only.
+            </summary>
+      <param name="info">The serialization info.</param>
+      <param name="context">The streaming context.</param>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.PdfException.Source">
+      <summary>
+            Get or set the name of the application or the object that causes the error.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.PdfException.StackTrace">
+      <summary>
+            Get a string representation of the frames on the call stack at the time the current exception was thrown.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.UpdatedEventHandler">
+      <summary>
+            The updated event handler, used for DrawJob.Updated.
+            </summary>
+      <param name="sender">The event sender.</param>
+      <param name="args">The event data.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection">
+      <summary>
+            An embedded file (also know as attachment) collection.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.Contains(TallComponents.PDF.Rasterizer.EmbeddedFile)">
+      <summary>
+            Determine whether an <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile">EmbeddedFile</see> is in the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection">EmbeddedFileCollection</see>.
+            </summary>
+      <param name="embeddedFile">The <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile" /> to verify.</param>
+      <returns>True if the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile" /> is found in this <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection" />, false otherwise.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.IndexOf(TallComponents.PDF.Rasterizer.EmbeddedFile)">
+      <summary>
+            Searches for the specified <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile">EmbeddedFile</see> in the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection">EmbeddedFileCollection</see>.
+            </summary>
+      <param name="embeddedFile">The <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile" /> to locate in the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection" />.</param>
+      <returns>The zero-based index at which the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile" /> is found, -1 if not found.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.GetEnumerator">
+      <summary>
+            Implements strong typed IEnumerable&lt;T&gt;.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>
+            Implements IEnumerable.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.Item(System.Int32)">
+      <summary>
+            Get an <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile">EmbeddedFile</see> by zero-based index from the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection">EmbeddedFileCollection</see>. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFileCollection.Count">
+      <summary>
+            Get the number of <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFile">EmbeddedFile</see>s actually contained in the <see cref="T:TallComponents.PDF.Rasterizer.EmbeddedFileCollection">EmbeddedFileCollection</see></summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.PageBoundary">
+      <summary>
+            The box which should be used as outline for the page.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.Default">
+      <summary>
+            The dimensions of the intersection of the media box and the crop box. 
+            If the crop box is not present, the visible box is set to the media box.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.MediaBox">
+      <summary>
+            The boundaries of the physical medium on which the page is intended to be displayed or printed.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.CropBox">
+      <summary>
+            The visible region. When the page is displayed or printed, its contents are to be clipped (cropped).
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.BleedBox">
+      <summary>
+            The region to which the contents of the page should be clipped when output in a production environment.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.TrimBox">
+      <summary>
+            The intended dimensions of the finished page after trimming.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PageBoundary.ArtBox">
+      <summary>
+            The extent of the page’s meaningful content (including potential white space) as intended by the page’s creator.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Diagnostics.Message">
+      <summary>
+            Message.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.Message.Text">
+      <summary>
+            The message text.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.Message.Exception">
+      <summary>
+            The exception that caused this error message.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.Message.Severity">
+      <summary>
+            The severity of the message.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.ConvertToTiffOptions">
+      <summary>
+            Specifies options for converting PDF pages to TIFF images. By default, black-and-white
+            images will be generated, using CCITT Group 3 fax compression.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.#ctor">
+      <summary>
+            Create a new ConvertToTiffOptions with default settings.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.#ctor(System.Double,TallComponents.PDF.Rasterizer.TiffCompression)">
+      <summary>
+            Create a new ConvertToTiffOptions with given compression.
+            </summary>
+      <param name="resolution">The resolution the image will be saved in (in DPI).</param>
+      <param name="compression">Compression algorithm to use.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.#ctor(System.Double,TallComponents.PDF.Rasterizer.TiffCompression,System.Boolean)">
+      <summary>
+            Create a new ConvertToTiffOptions with given compression.
+            </summary>
+      <param name="resolution">
+      </param>
+      <param name="compression">Compression algorithm to use.</param>
+      <param name="invertImage">Invert the image if requested.</param>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.Compression">
+      <summary>
+            Compression algorithm to use. Default is CcittG3.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.InvertImage">
+      <summary>
+            Invert the TIFF image if set to true. Some TIFF viewers don't respect all tags and
+            display the image inverted. This setting should fix that.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.Resolution">
+      <summary>
+            Resolution in DPI. Default is 150.0.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.DitherMatrix">
+      <summary>
+            This is the matrix which used in the dithering process.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToTiffOptions.PixelFormat">
+      <summary>
+            The pixel format that will be used for the image.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageSeverity">
+      <summary>
+            Severity of a message
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Diagnostics.MessageSeverity.Information">
+      <summary>
+            An informational message.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Diagnostics.MessageSeverity.Warning">
+      <summary>
+            A warning.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Diagnostics.MessageSeverity.Error">
+      <summary>
+            An error.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventHandler">
+      <summary>
+            The ResolveFont event handler.
+            </summary>
+      <param name="sender">The event sender.</param>
+      <param name="args">The event data.</param>
+    </member>
+    <member name="T:TallComponents.Licensing.PDFRasterizerLicenseAttribute">
+      <summary>
+             License key attribute. Use this attribute to include a license key with your assembly or application.
+             </summary>
+    </member>
+    <member name="T:TallComponents.Licensing.LicenseAttribute">
+      <summary>
+            Base class of product specific custom attributes that let you enter
+            the redistribution license key as an attribute of the entry or calling assembly.
+            </summary>
+    </member>
+    <member name="P:TallComponents.Licensing.LicenseAttribute.Key">
+      <summary>
+            The type of license key.
+            </summary>
+    </member>
+    <member name="P:TallComponents.Licensing.LicenseAttribute.Value">
+      <summary>
+            The license key value.
+            </summary>
+    </member>
+    <member name="M:TallComponents.Licensing.PDFRasterizerLicenseAttribute.#ctor(System.String,System.String)">
+      <summary>
+            Initialize a PDFRasterizer.NET License attribute. 
+            </summary>
+      <param name="key">The key to use.</param>
+      <param name="value">The value to use (retrieved from the 'MyAccount' section from our website).</param>
+    </member>
+    <member name="P:TallComponents.Licensing.PDFRasterizerLicenseAttribute.Key">
+      <summary>
+            The key entered in the constructor.
+            </summary>
+    </member>
+    <member name="P:TallComponents.Licensing.PDFRasterizerLicenseAttribute.Value">
+      <summary>
+            The value entered in the constructor.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ImageStripMode">
+      <summary>
+            Images that are composed of tiles of smaller images can cause interpolation artifacts.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.ImageStripMode.HighSpeed">
+      <summary>
+             Accept interpolation artifacts while drawing images that are composed of
+            tiles of smaller images, decreasing the time needed to draw them.
+             </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.ImageStripMode.HighQuality">
+      <summary>
+            Avoid interpolation artifacts while drawing images that are composed of
+            tiles of smaller images, increasing the time needed to draw them.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.FontLocation">
+      <summary>
+            Specifies whether a font has been resolved.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.Unresolved">
+      <summary>
+            No definition for the font has been found.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.System">
+      <summary>
+            The font is available as a system font. This is the case for example
+            if no entry in the font substitution map matches the given font and
+            a font with the same name has been found as a system font.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.File">
+      <summary>
+            The font is available as a file. This is the case for example if
+            a path to the font file has been added to the font substition map.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.Data">
+      <summary>
+            The font is available as data. This is the case for example if the
+            the font is embedded in the document or if the font data has been
+            added as a stream to the font substitution map.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.CurveRenderSettings">
+      <summary>
+            Encapsulates all settings that control how curves are rendered.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.CurveRenderSettings.SmoothingMode">
+      <summary>
+            Specifies whether smoothing (antialiasing) is applied to lines and curves and the edges of filled areas. Default is AntiAlias.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.CurveRenderSettings.RenderCurves">
+      <summary>
+            Controls whether curves will be rendered. If set to false, no curves
+            will be rendered. The default is true.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.ConvertToWpfOptions">
+      <summary>
+            Specifies options for converting PDF pages to Wpf objects.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.ConvertToWpfOptions.#ctor">
+      <summary>
+            Create a new ConvertToImageOptions with default settings.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ConvertToWpfOptions.ConvertToImages">
+      <summary>
+             If set, each PDF page will be converted to an image.
+             </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection">
+      <summary>
+            A message collection.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.GetEnumerator">
+      <summary>
+            Implements strong typed IEnumerable&lt;T&gt;.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>
+            Implements IEnumerable.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.Contains(TallComponents.PDF.Rasterizer.Diagnostics.Message)">
+      <summary>
+            Determine whether an <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message">Message</see> is in the <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection">MessageCollection</see>.
+            </summary>
+      <param name="message">The <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message" /> to verify.</param>
+      <returns>True if the <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message" /> is found in this <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection" />, false otherwise.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.IndexOf(TallComponents.PDF.Rasterizer.Diagnostics.Message)">
+      <summary>
+            Searches for the specified <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message">Message</see> in the <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection">MessageCollection</see>.
+            </summary>
+      <param name="message">The <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message" /> to locate in the <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection" />.</param>
+      <returns>The zero-based index at which the <see cref="T:TallComponents.PDF.Rasterizer.Diagnostics.Message" /> is found, -1 if not found.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.Item(System.Int32)">
+      <summary>
+            Retrieve a message by 0-based index. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.MessageCollection.Count">
+      <summary>
+            The number of messages.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.ResolveCMapEventHandler">
+      <summary>
+            Represents the method that handles the TextRenderSettings.ResolveCMap event.
+            </summary>
+      <param name="e">The resolve cmap event arguments.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection">
+      <summary>
+            A font collection.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Fonts.FontCollection.Contains(TallComponents.PDF.Rasterizer.Fonts.Font)">
+      <summary>
+            Determine whether an <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font">Font</see> is in the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection">FontCollection</see>.
+            </summary>
+      <param name="font">The <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font" /> to verify.</param>
+      <returns>True if the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font" /> is found in this <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection" />, false otherwise.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Fonts.FontCollection.IndexOf(TallComponents.PDF.Rasterizer.Fonts.Font)">
+      <summary>
+            Searches for the specified <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font">Font</see> in the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection">FontCollection</see>.
+            </summary>
+      <param name="font">The <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font" /> to locate in the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection" />.</param>
+      <returns>The zero-based index at which the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font" /> is found, -1 if not found.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Fonts.FontCollection.GetEnumerator">
+      <summary>
+            Implements strong typed IEnumerable&lt;T&gt;.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Fonts.FontCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>
+            Implements IEnumerable.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.FontCollection.Item(System.Int32)">
+      <summary>
+            Get an <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font">Font</see> by zero-based index from the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection">FontCollection</see>. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.FontCollection.Count">
+      <summary>
+            Get the number of <see cref="T:TallComponents.PDF.Rasterizer.Fonts.Font">Fonts</see>s actually contained in the <see cref="T:TallComponents.PDF.Rasterizer.Fonts.FontCollection">FontCollection</see></summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.WrongPasswordException">
+      <summary>
+            The exception that is thrown when a wrong password is specified or no password is specified where it is required.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.WrongPasswordException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            For serializing purposes only.
+            </summary>
+      <param name="info">The serialization info.</param>
+      <param name="context">The streaming context.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.UnsupportedPdfException">
+      <summary>
+            The exception that is thrown when the PDF document is not supported.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.UnsupportedPdfException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            For serializing purposes only.
+            </summary>
+      <param name="info">The serialization info.</param>
+      <param name="context">The streaming context.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap">
+      <summary>
+            The FontSubstitutionMap lets you define which external fonts are used to render fonts that are not embedded.
+            Be sure to call this with correct trust settings when running under IIS.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.String,System.String)">
+      <summary>
+            Add a new entry to the map. 
+            </summary>
+      <param name="fontName">The name of the font to map.</param>
+      <param name="path">The path to the font file.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.String)">
+      <summary>
+            Add a new entry to the map without specifying the font name. The name will be extracted
+            from the font program.
+            </summary>
+      <param name="path">The path to the font file.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.String,System.IO.Stream)">
+      <summary>
+            Add a new entry to the map. 
+            </summary>
+      <param name="fontName">The name of the font to map.</param>
+      <param name="stream">The stream that holds the font program.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.IO.Stream)">
+      <summary>
+            Add a new entry to the map without specifying the font name. The name will be extracted
+            from the font program.
+            </summary>
+      <param name="stream">The stream that holds the font program.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.String,System.String,TallComponents.PDF.Rasterizer.Configuration.FontStyleEmulation)">
+      <summary>
+            Add a new entry to the map. 
+            </summary>
+      <param name="fontName">The name of the font to map.</param>
+      <param name="path">The path to the font file.</param>
+      <param name="style">The font style to emulate.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(System.String,System.IO.Stream,TallComponents.PDF.Rasterizer.Configuration.FontStyleEmulation)">
+      <summary>
+            Add a new entry to the map. 
+            </summary>
+      <param name="fontName">The name of the font to map.</param>
+      <param name="stream">The stream that holds the font program.</param>
+      <param name="style">The font style to emulate.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Add(TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap)">
+      <summary>
+            Add all entries of the argument substition map.
+            </summary>
+      <param name="fontSubstitutionMap">The map of which al entries will be copied.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Clear">
+      <summary>
+            Remove all entries.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Save(System.IO.Stream)">
+      <summary>
+            Save the font substitution map.
+            </summary>
+      <param name="stream">Save to this stream.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Load(System.IO.Stream)">
+      <summary>
+            Load font susbstitution map.
+            </summary>
+      <param name="stream">Load from this stream.</param>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.Standard">
+      <summary>
+            A read-only map that contains the standard substitution map.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.FontNames">
+      <summary>
+            All the font names included in this map.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.FontSubstitutionMap.DefaultSubstitutionFont">
+      <summary>
+            Default substitution for non-embedded fonts.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.JobStatus">
+      <summary>
+            Job Status
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.JobStatus.Created">
+      <summary>
+            Job has been created, but has not been started yet.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.JobStatus.Started">
+      <summary>
+            Job has been started.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.JobStatus.Stopped">
+      <summary>
+            Job has been stopped.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.JobStatus.Ready">
+      <summary>
+            Job has completed successfully.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.ExtractedImageInfo">
+      <summary>
+            Represents a single occurrence of an image on a PDF page. Encapsulates both the image and its location on the page.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ExtractedImageInfo.Transformation">
+      <summary>
+            The transformation that should be performed in order to draw the image at the right location. 
+            This transformation assumes that the original coordinate system has its origin at the 
+            lower-left corner and a unit corresponds to a point (1/72 inch). It also assumes that the 
+            image is drawn at the origin of the transformed coordinate system as a unit rectangle.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.ExtractedImageInfo.Bitmap">
+      <summary>
+            The extracted image.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.PageCollection">
+      <summary>
+            Collection of pages inside a PDF document. 
+            Non-creatable. Obtained through the Pages property of Document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PageCollection.Contains(TallComponents.PDF.Rasterizer.Page)">
+      <summary>
+            Determine whether an <see cref="T:TallComponents.PDF.Rasterizer.Page">Page</see> is in the <see cref="T:TallComponents.PDF.Rasterizer.PageCollection">PageCollection</see>.
+            </summary>
+      <param name="page">The <see cref="T:TallComponents.PDF.Rasterizer.Page" /> to verify.</param>
+      <returns>True if the <see cref="T:TallComponents.PDF.Rasterizer.Page" /> is found in this <see cref="T:TallComponents.PDF.Rasterizer.PageCollection" />, false otherwise.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PageCollection.IndexOf(TallComponents.PDF.Rasterizer.Page)">
+      <summary>
+            Searches for the specified <see cref="T:TallComponents.PDF.Rasterizer.Page">Page</see> in the <see cref="T:TallComponents.PDF.Rasterizer.PageCollection">PageCollection</see>.
+            </summary>
+      <param name="page">The <see cref="T:TallComponents.PDF.Rasterizer.Page" /> to locate in the <see cref="T:TallComponents.PDF.Rasterizer.PageCollection" />.</param>
+      <returns>The zero-based index at which the <see cref="T:TallComponents.PDF.Rasterizer.Page" /> is found, -1 if not found.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PageCollection.GetEnumerator">
+      <summary>
+            Implements strong typed IEnumerable&lt;T&gt;.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.PageCollection.System#Collections#IEnumerable#GetEnumerator">
+      <summary>
+            Implements IEnumerable.GetEnumerator.
+            </summary>
+      <returns>Enumerator for this collection.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.PageCollection.Item(System.Int32)">
+      <summary>
+            Retrieve a page by 0-based index.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.PageCollection.Count">
+      <summary>
+            Number of pages.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.FontRenderMode">
+      <summary>
+            Different font render modes.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontRenderMode.RenderAsCurves">
+      <summary>
+            Render glyphs as curves.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.FontRenderMode.RenderAsFont">
+      <summary>
+            Render glyphs as device fonts (GDI+, or WPF).
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Document">
+      <summary>
+            The Document class is the top-level class in the TallComponents.PDF.Rasterizer namespace.
+            It represents an existing PDF document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.#ctor(System.IO.BinaryReader)">
+      <summary>
+            Opens an existing document.
+            </summary>
+      <param name="reader">The reader from which the document is read.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.#ctor(System.IO.BinaryReader,System.String)">
+      <summary>
+            Opens an existing password-protected document.
+            </summary>
+      <param name="reader">The reader from which the document is read.</param>
+      <param name="password">Password that is required to open this document.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.#ctor(System.IO.Stream)">
+      <summary>
+            Opens an existing document.
+            </summary>
+      <param name="stream">The stream from which the document is read.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.#ctor(System.IO.Stream,System.String)">
+      <summary>
+            Opens an existing password-protected document.
+            </summary>
+      <param name="stream">The stream from which the document is read.</param>
+      <param name="password">Password that is required to open this document.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions)">
+      <summary>
+            Convert this document to a multi-page TIFF.
+            </summary>
+      <param name="stream">Save TIFF to this stream.</param>
+      <param name="options">Options that control the format of the TIFF.</param>
+      <code>
+            using ( FileStream pdf = new FileStream( 
+               "report1265.pdf", 
+               FileMode.Open, 
+               FileAccess.Read ) )
+            {
+               Document document = new Document( pdf );
+               using ( FileStream tiff = new FileStream( 
+                  "report1265.tif", 
+                  FileMode.Create, 
+                  FileAccess.Write ) )
+               {       
+                  document.ConvertToTiff( tiff, new ConvertToTiffOptions( 300, TiffCompression.CcittG4 ) );
+               }
+            }</code>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Convert this document to a multi-page TIFF.
+            </summary>
+      <param name="stream">Save TIFF to this stream.</param>
+      <param name="options">Options that control the format of the TIFF.</param>
+      <param name="summary">The summary to which diagnostics are written. This may be null</param>
+      <code>
+            using ( FileStream pdf = new FileStream( 
+               "report1265.pdf", 
+               FileMode.Open, 
+               FileAccess.Read ) )
+            {
+               Document document = new Document( pdf );
+               using ( FileStream tiff = new FileStream( 
+                  "report1265.tif", 
+                  FileMode.Create, 
+                  FileAccess.Write ) )
+               {       
+                  document.ConvertToTiff( tiff, new ConvertToTiffOptions( 300, TiffCompression.CcittG4 ) );
+               }
+            }</code>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Configuration.RenderSettings)">
+      <summary>
+            Convert this document to a multi-page TIFF.
+            </summary>
+      <param name="stream">Save TIFF to this stream.</param>
+      <param name="options">Options that control the format of the TIFF.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <code>
+            using ( FileStream pdf = new FileStream( 
+               "report1265.pdf", 
+               FileMode.Open, 
+               FileAccess.Read ) )
+            {
+               Document document = new Document( pdf );
+               using ( FileStream tiff = new FileStream( 
+                  "report1265.tif", 
+                  FileMode.Create, 
+                  FileAccess.Write ) )
+               {       
+                  document.ConvertToTiff( tiff, new ConvertToTiffOptions( 300, TiffCompression.CcittG4 ) );
+               }
+            }</code>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Convert this document to a multi-page TIFF.
+            </summary>
+      <param name="stream">Save TIFF to this stream.</param>
+      <param name="options">Options that control the format of the TIFF.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <param name="summary">The summary to which diagnostics are written. This may be null</param>
+      <code>
+            using ( FileStream pdf = new FileStream( 
+               "report1265.pdf", 
+               FileMode.Open, 
+               FileAccess.Read ) )
+            {
+               Document document = new Document( pdf );
+               using ( FileStream tiff = new FileStream( 
+                  "report1265.tif", 
+                  FileMode.Create, 
+                  FileAccess.Write ) )
+               {       
+                  document.ConvertToTiff( tiff, new ConvertToTiffOptions( 300, TiffCompression.CcittG4 ) );
+               }
+            }</code>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions)">
+      <summary>
+            Creates a WPF FixedDocument instance for this PDF document.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <returns>A FixedDocument instance.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions,System.Int32,System.Int32)">
+      <summary>
+            Creates a WPF FixedDocument instance for this PDF document.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <param name="firstPageIndex">The first page to convert (zero-based).</param>
+      <param name="lastPageIndex">The last page to convert (zero-based).</param>
+      <returns>A FixedDocument instance.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Creates a WPF FixedDocument instance for this PDF document.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <param name="summary">The summary to which diagnostics are written. This may be null.</param>
+      <returns>A FixedDocument instance.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions,System.Int32,System.Int32,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Creates a WPF FixedDocument instance for this PDF document.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <param name="firstPageIndex">The first page to convert (zero-based).</param>
+      <param name="lastPageIndex">The last page to convert (zero-based).</param>
+      <param name="summary">The summary to which diagnostics are written. This may be null</param>
+      <returns>A FixedDocument instance.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Document.Calculate">
+      <summary>
+            Trigger to execute the calculate actions in the value fields.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.Fonts">
+      <summary>
+            All fonts used in this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.EmbeddedFiles">
+      <summary>
+            The embedded files in this document. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.Layers">
+      <summary>
+            The layers in this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.DocumentInfo">
+      <summary>
+            Document Info for the document like Author, Title and Subject.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.IsSupported">
+      <summary>
+            Returns true if the source document is supported.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Document.Pages">
+      <summary>
+            Collection of pages in this document.
+            </summary>
+    </member>
+    <member name="T:TallComponents.Licensing.LicenseCollection">
+      <summary>
+            The LicenseCollection class let you enter the key and value programmatically.
+            </summary>
+    </member>
+    <member name="M:TallComponents.Licensing.LicenseCollection.Add(System.String,System.String)">
+      <summary>
+            Add a license programmatically.
+            </summary>
+      <param name="licenseKey">The type of license key.</param>
+      <param name="licenseKeyValue">The license key value.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.ResolveCMapEventArgs">
+      <summary>
+            Class containing data for the TextRenderSettings.ResolveCMap event.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveCMapEventArgs.Name">
+      <summary>
+            The CMap name that needs to be resolved.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveCMapEventArgs.CMap">
+      <summary>
+            The resolved CMap, or null if the CMap cannot be resolved.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.RenderSettings">
+      <summary>
+            Encapsulates all settings that control the render process.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.#ctor">
+      <summary>
+            Create a new RenderSettings object with default values.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.ActionSettings">
+      <summary>
+            All settings related to actions.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.ImageSettings">
+      <summary>
+            All settings related to image rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.AnnotationSettings">
+      <summary>
+            All settings related to annotation rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.TextSettings">
+      <summary>
+            All settings related to text rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.ColorSettings">
+      <summary>
+            All settings related to color rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.LayerSettings">
+      <summary>
+            All settings related to layer rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.RenderPageGraphics">
+      <summary>
+            Controls whether the page graphics will be rendered. If set to false, no page graphics will
+            be rendered. The default is true. This flag does not influence the rendering of
+            annotations, so it can be used to render annotations only.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.RenderPurpose">
+      <summary>
+            Specifies in what way the rendering result will be used. The default is "View".
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.CurveSettings">
+      <summary>
+            All settings related to curve rendering.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.GdiSettings">
+      <summary>
+            Used for Gdi workarounds.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.RenderSettings.RequiredTrustLevel">
+      <summary>
+            This setting tells the software what environment it runs in.
+            When running is an untrusted IIS environment
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ImageRenderSettings">
+      <summary>
+            Encapsulates all settings that control how images are rendered.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ImageRenderSettings.ImageStripMode">
+      <summary>
+            Accept or avoid interpolation artifacts while drawing images that are 
+            composed of tiles of smaller images.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ImageRenderSettings.ApplyColorKeyMask">
+      <summary>
+            Apply the color key mask of an image if it contains one.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ImageRenderSettings.RenderImages">
+      <summary>
+            Controls whether images are rendered. If set to false, no images
+            will be rendered. The default is true.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ColorRenderSettings">
+      <summary>
+            Encapsulates all settings that control how colorprofiles are processed and what background color is used for the document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ColorRenderSettings.BackColor">
+      <summary>
+            The back color (default is Color.White)
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ColorRenderSettings.TransformationMode">
+      <summary>
+            The color transformation mode to use.
+            This is a trade off between speed and quality.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.ColorRenderSettings.OutputColorProfile">
+      <summary>
+            The color profile of the output device.
+            Default the profile is set to a sRGB color profile.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.InvalidPdfException">
+      <summary>
+            The exception that is thrown when the PDF document is invalid.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.InvalidPdfException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+      <summary>
+            For serializing purposes only.
+            </summary>
+      <param name="info">The serialization info.</param>
+      <param name="context">The streaming context.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.RenderPurpose">
+      <summary>
+            Specifies in what way the rendering result will be used. This values determines which
+            annotations will be rendered.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.RenderPurpose.View">
+      <summary>
+            The render result will be used for on-screen viewing. This means that the Annotation.Invisible
+            property determines whether an annotation will be rendered.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.RenderPurpose.Print">
+      <summary>
+            The render result will be used for printing. This means that the Annotation.Print property
+            determines whether an annotation will be rendered.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.EmbedMode">
+      <summary>
+            The different ways that a font can be stored inside a PDF.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.EmbedMode.Unknown">
+      <summary>
+            The font embed mode could not be determined.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.EmbedMode.ReferenceOnly">
+      <summary>
+            The font is not embedded. Only a reference is stored inside the PDF.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.EmbedMode.Subset">
+      <summary>
+            A subset of the font is embdedded inside the PDF.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Fonts.EmbedMode.Full">
+      <summary>
+            The font is fully embedded inside the PDF.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.LayerRenderSettings">
+      <summary>
+            Encapsulates all settings that control which layers are rendered.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.LayerRenderSettings.Layers">
+      <summary>
+            Specify which layers should be visible during rendering. Default is null.
+            </summary>
+    </member>
+    <member name="T:TallComponents.Licensing.License">
+      <summary>
+            The License class let you check if you have entered a valid license key.
+            </summary>
+    </member>
+    <member name="M:TallComponents.Licensing.License.IsValid">
+      <summary>
+            Check if this component detects a valid license key.
+            </summary>
+    </member>
+    <member name="M:TallComponents.Licensing.License.GetLicenseInfo">
+      <summary>
+            This method returns some information which is used to check if the component runs in evaluation mode, or in unlock/purchased mode.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Orientation">
+      <summary>
+            Orientations of various objects.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Orientation.Rotate0">
+      <summary>
+            No rotation.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Orientation.Rotate90">
+      <summary>
+            90 degrees rotation, counter-clockwise.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Orientation.Rotate180">
+      <summary>
+            180 degrees rotation.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Orientation.Rotate270">
+      <summary>
+            270 degrees rotation, counter-clockwise.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.ColorTransformationMode">
+      <summary>
+            Render quality for colors.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.ColorTransformationMode.HighSpeed">
+      <summary>
+            HighSpeed uses a faster algorithm but with less quality ( especially for DeviceCMYK ).
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.ColorTransformationMode.HighQuality">
+      <summary>
+            ICC Based profiles are used to transform colors from the color space to the device.
+            Very good quality, but a bit slower.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.TrustLevel">
+      <summary>
+            Adjust the software to the environment is runs in.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.TrustLevel.Medium">
+      <summary>
+            This allows the software to be run under IIS using Medium trust, but memory usage is higher when using large images.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.TrustLevel.High">
+      <summary>
+            This allows the software to be run under IIS using High trust, but memory usage is higher when using large images.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.Configuration.TrustLevel.Full">
+      <summary>
+            Memory usage is low when using large images, but it can only be run in Full trust under IIS.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.PixelFormat">
+      <summary>
+            Different pixel formats.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PixelFormat.Bw1Bpp">
+      <summary>
+            1 bit per pixel, black and white.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.PixelFormat.Rgba32Bpp">
+      <summary>
+            32 bits per pixel, RGB + alpha.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Layer">
+      <summary>
+            This class represents a single layer item.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Layer.Clone">
+      <summary>
+            Clones this Layer, and detach it from the original document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Layer.System#ICloneable#Clone">
+      <summary>
+            Clones this Layer, and detach it from the original document.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Layer.ToString">
+      <summary>
+            The name is this Layer.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Layer.Name">
+      <summary>
+            The name of this layer.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Layer.Visible">
+      <summary>
+            The state if this layer must be visible or invisible when the page is rasterized.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.EmbeddedFile">
+      <summary>
+            An embedded file (also know as attachment) object.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFile.Write(System.IO.Stream)">
+      <summary>
+            Write this embedded file to a stream, eg a FileStream or MemoryStream.
+            </summary>
+      <param name="stream">Write the embedded file to this stream.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFile.Write(System.IO.BinaryWriter)">
+      <summary>
+            Write this embedded file to any writer.
+            </summary>
+      <param name="binaryWriter">Write the embedded file to this writer.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.EmbeddedFile.ToString">
+      <summary>
+            Returns a string for the current EmbeddedFile object.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.Description">
+      <summary>
+            The description provided to this embedded file.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.FileName">
+      <summary>
+            The file name for this embedded file.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.MimeType">
+      <summary>
+            The MIME type for this embedded file. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.CreationDate">
+      <summary>
+            The creation date for this embedded file. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.ModificationDate">
+      <summary>
+            The modification date for this embedded file. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.Size">
+      <summary>
+            The size in bytes for this embedded file. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.EmbeddedFile.FolderName">
+      <summary>
+            The folder name in which this embedded file should be placed. (can be null, meaning not placed in any folder)
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Diagnostics.Summary">
+      <summary>
+            Provides a summary of a process.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Diagnostics.Summary.#ctor">
+      <summary>
+            Create a new summary instance.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Diagnostics.Summary.Messages">
+      <summary>
+            A list of messages, in the order that they were generated.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs">
+      <summary>
+             The ResolveFont event data.
+             </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.PdfFontName">
+      <summary>
+            The name of the font, as found in the PDF document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.Embedded">
+      <summary>
+            Whether the font is embedded in the PDF document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.SystemFontName">
+      <summary>
+            The system font name. If the font could be resolved and the <see cref="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.FontLocation" />
+            is
+            <see cref="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.System" />, this property contains the name of the system font.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.FontPath">
+      <summary>
+            The Resolved font path. If the font could be resolved and the <see cref="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.FontLocation" />
+            is <see cref="F:TallComponents.PDF.Rasterizer.Fonts.FontLocation.File" />, this value holds a path to the font.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.Bold">
+      <summary>
+            Specifies a bold variant of a system font.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.Italic">
+      <summary>
+            Specifies an italic variant of a system font.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.FontRenderMode">
+      <summary>
+            The mode that will be used to render the font.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.ResolveFontEventArgs.FontLocation">
+      <summary>
+            Specifies whether a definition for the font has been found.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.DrawJob">
+      <summary>
+             Represents an asynchronous drawing job.
+             </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.#ctor(TallComponents.PDF.Rasterizer.Page)">
+      <summary>
+            Create a new asynchronous drawing job for the given page.
+            </summary>
+      <param name="page">The page that is to be drawn.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.Start(System.Drawing.Bitmap,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.PageBoundary,System.Drawing.Drawing2D.Matrix)">
+      <summary>
+            Start drawing the page to the given bitmap.
+            </summary>
+      <param name="bitmap">The bitmap in which the page will be drawn.</param>
+      <param name="renderSettings">The render settings that will be used to draw the page.</param>
+      <param name="pageBoundary">The page boundary that will be used for drawing. If the page boundary is not specified, PageBoundary.Default will used.</param>
+      <param name="transformation">The transformation that will be applied before the page is drawn.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.Stop">
+      <summary>
+            Stop drawing. The job may not stop immediately, but at a moment that permits it.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.Wait">
+      <summary>
+            Wait until the job has stopped, or is ready.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.GetBitmap">
+      <summary>
+            Get a copy of the bitmap for as far as it has been drawn. This may
+            return null, e.g. when the job has not yet been started, or after
+            calling Dispose for the job.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.DrawJob.Dispose">
+      <summary>
+            Stops, and Disposes the draw job. The job may not stop immediately, but at a moment
+            that permits it.
+            </summary>
+    </member>
+    <member name="E:TallComponents.PDF.Rasterizer.DrawJob.Updated">
+      <summary>
+            Raised regularly while the job is running and immediately after drawing has finished. This event
+            is provided as a convenience so that the generated bitmap can be inspected regularly, without
+            needing to implement this functionality oneself. As a rule of thumb, this event gets fired at a
+            higher frequency for simple drawing jobs, so that results can be shown quickly, and at a lower
+            frequency for complex jobs, so that the drawing job itself will not be slowed down too much by
+            frequent updates.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DrawJob.JobStatus">
+      <summary>
+            The job status.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DrawJob.Summary">
+      <summary>
+            The summary of the current drawing job.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings">
+      <summary>
+            Encapsulates all settings that control how annotations are rendered.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderNone">
+      <summary>
+            Set all RenderXxxAnnotation properties to false.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderAll">
+      <summary>
+            Set all RenderXxxAnnotation properties to true.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderTextAnnotation">
+      <summary>
+            Render Text annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderLinkAnnotation">
+      <summary>
+            Render Link annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderFreeTextAnnotation">
+      <summary>
+            Render FreeText annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderLineAnnotation">
+      <summary>
+            Render Line annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderSquareAnnotation">
+      <summary>
+            Render Square annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderCircleAnnotation">
+      <summary>
+            Render Circle annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderPolygonAnnotation">
+      <summary>
+            Render Polygon annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderPolylineAnnotation">
+      <summary>
+            Render Polyline annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderHighlightAnnotation">
+      <summary>
+            Render Highlight annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderUnderlineAnnotation">
+      <summary>
+            Render Underline annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderSquigglyUnderlineAnnotation">
+      <summary>
+            Render SquigglyUnderline annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderStrikeOutAnnotation">
+      <summary>
+            Render StrikeOut annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderRubberStampAnnotation">
+      <summary>
+            Render RubberStamp annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderCaretAnnotation">
+      <summary>
+            Render Caret annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderInkAnnotation">
+      <summary>
+            Render Ink annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderPopupAnnotation">
+      <summary>
+            Render Popup annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderFileAttachmentAnnotation">
+      <summary>
+            Render FileAttachments annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderSoundAnnotation">
+      <summary>
+            Render Sound annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderMovieAnnotation">
+      <summary>
+            Render Movie annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderWidgetAnnotation">
+      <summary>
+            Render Widget (form field) annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderScreenAnnotation">
+      <summary>
+            Render Screen annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderPrinterMarkAnnotation">
+      <summary>
+            Render PrinterMark annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderTrapNetAnnotation">
+      <summary>
+            Render TrapNet annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.RenderWatermarkAnnotation">
+      <summary>
+            Render Watermark annotations.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Configuration.AnnotationRenderSettings.Render3DAnnotation">
+      <summary>
+            Render 3D annotations.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.TiffCompression">
+      <summary>
+            Different compression algorithms.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.TiffCompression.None">
+      <summary>
+            Do not compress image data.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.TiffCompression.CcittG3">
+      <summary>
+            CCITT Group 3 fax encoding. Referred to as CCITT T.4 by TIFF 6.0.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.TiffCompression.CcittG4">
+      <summary>
+            CCITT Group 4 fax encoding. Referred to as CCITT T.6 by TIFF 6.0.
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.TiffCompression.Lzw">
+      <summary>
+            LZW (Lempel-Ziv-Welch encoding).
+            </summary>
+    </member>
+    <member name="F:TallComponents.PDF.Rasterizer.TiffCompression.PackBits">
+      <summary>
+            Macintosh RLE (run-length encoding).
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Page">
+      <summary>
+            An existing page inside a document. 
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics)">
+      <summary>
+             Draws the page content using page boundary 'Default'.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics,TallComponents.PDF.Rasterizer.PageBoundary)">
+      <summary>
+             Draws the page content.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+      <param name="pageBoundary">The page boundary that is used to draw the PDF page. If the page boundary is not specified for this page, Default is used.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics,TallComponents.PDF.Rasterizer.Configuration.RenderSettings)">
+      <summary>
+             Draws the page content.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics,TallComponents.PDF.Rasterizer.PageBoundary,TallComponents.PDF.Rasterizer.Configuration.RenderSettings)">
+      <summary>
+             Draws the page content.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+      <param name="pageBoundary">The page boundary that is used to draw the PDF page. If the page boundary is not specified for this page, Default is used.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+             Draws the page content.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <param name="summary">The summary to which diagnostic information is written</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.Draw(System.Drawing.Graphics,TallComponents.PDF.Rasterizer.PageBoundary,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+             Draws the page content.
+             </summary>
+      <param name="graphics">Graphics object to which content is drawn.</param>
+      <param name="pageBoundary">The page boundary that is used to draw the PDF page. If the page boundary is not specified for this page, Default is used.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <param name="summary">The summary to which diagnostic information is written</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions)">
+      <summary>
+            Convert this PDF page to an image.
+            </summary>
+      <param name="stream">Save the image to this stream. The caller is responsible for closing and disposing the stream.</param>
+      <param name="options">Options that control the format of the output image.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Configuration.RenderSettings)">
+      <summary>
+            Convert this PDF page to an image.
+            </summary>
+      <param name="stream">Save the image to this stream. The caller is responsible for closing and disposing the stream.</param>
+      <param name="options">Options that control the format of the output image.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Convert this PDF page to an image.
+            </summary>
+      <param name="stream">Save the image to this stream. The caller is responsible for closing and disposing the stream.</param>
+      <param name="options">Options that control the format of the output image.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <param name="summary">The summary to which diagnostic information is written. This can be null.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToTiff(System.IO.Stream,TallComponents.PDF.Rasterizer.ConvertToTiffOptions,TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.Rectangle,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Convert a rectangle of this PDF page to an image.
+            </summary>
+      <param name="stream">Save the image to this stream. The caller is responsible for closing and disposing the stream.</param>
+      <param name="options">Options that control the format of the output image.</param>
+      <param name="renderSettings">Settings that control the render process.</param>
+      <param name="pageRectangle">The rectangle on the page that will be converted. The origin is at the bottom left of the
+            page, and units are in points (1/72 inch).</param>
+      <param name="summary">The summary to which diagnostic information is written. This can be null.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ExtractImages">
+      <summary>
+            Extracts all images on this page.
+            </summary>
+      <returns>Extracted images. Can be of zero length.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions)">
+      <summary>
+            Create a FixedPage instance for this page.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <returns>A FixedPage instance.</returns>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Page.ConvertToWpf(TallComponents.PDF.Rasterizer.Configuration.RenderSettings,TallComponents.PDF.Rasterizer.ConvertToWpfOptions,TallComponents.PDF.Rasterizer.Diagnostics.Summary)">
+      <summary>
+            Create a FixedPage instance for this page.
+            </summary>
+      <param name="renderSettings">The rendersetting that will be used. These basically influence the
+            graphical aspects of the result, such as the quality of the graphics, font mapping and
+            which types of elements are converted.</param>
+      <param name="convertOptions">The conversion options. These control coversion that are
+            not covered by the rendersettings.</param>
+      <param name="summary">The summary to which diagnostics are written. This may be null</param>
+      <returns>A FixedPage instance.</returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.Width">
+      <summary>
+            Width of this page in points.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.Height">
+      <summary>
+            Height of this page in points.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.Orientation">
+      <summary>
+            Orientation of this page in degrees. Default is Rotate0.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.MediaBox">
+      <summary>
+            A rectangle, expressed in points with the origin at the bottom left corner, defining the boundaries of the physical medium 
+            on which the page is intented to be displayed or printed.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.CropBox">
+      <summary>
+            A rectangle, expressed in points with the origin at the bottom left corner, defining the visible region of default user space. 
+            When the page is displayed or printed, its contents are to be clipped (cropped) to this rectangle and then imposed 
+            on the output medium in some implementation-defined manner.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.BleedBox">
+      <summary>
+            A rectangle, expressed in points with the origin at the bottom left corner, defining the region to which the contents of the 
+            page should be clipped when output in a production environment.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.TrimBox">
+      <summary>
+            A rectangle, expressed in points with the origin at the bottom left corner, defining the intended dimensions of the finished page after trimming.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.ArtBox">
+      <summary>
+            A rectangle, expressed in points with the origin at the bottom left corner, defining the extent of the page meaningful content (including potential 
+            white space) as intended by the page's creator.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Page.SingleImageOnly">
+      <summary>
+            True if and only if the content of this PDF page consists of a single image only.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Fonts.Font">
+      <summary>
+            A font used inside the document. 
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.Font.EmbedMode">
+      <summary>
+            How the font is stored inside the PDF.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.Font.Bold">
+      <summary>
+            Whether this font is bold by design.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.Font.Italic">
+      <summary>
+            Whether this font is italic by design.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Fonts.Font.Name">
+      <summary>
+            The name of the font.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Configuration.FontStyleEmulation">
+      <summary>
+            Font style emulation settings. Works in combination with FontSubstitutionMap.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Configuration.FontStyleEmulation.#ctor(System.Boolean,System.Boolean)">
+      <summary>
+            Create settings for the font style emulation.
+            </summary>
+      <param name="bold">Emulate the bold font style by drawing a
+            line on the outlines of the characters.</param>
+      <param name="italic">Emulate the italic font style by skewing the characters.</param>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.Rectangle">
+      <summary>
+            A rectangle represents an area on the page.
+            </summary>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Rectangle.#ctor(System.Double,System.Double,System.Double,System.Double)">
+      <summary>
+            Create a new rectangle.
+            </summary>
+      <param name="left">The left position in points.</param>
+      <param name="bottom">The bottom position in points.</param>
+      <param name="width">The rectangle width in points.</param>
+      <param name="height">The rectangle height in points.</param>
+    </member>
+    <member name="M:TallComponents.PDF.Rasterizer.Rectangle.ToString">
+      <summary>
+            Return a string in format '[' Left Bottom Width Height ']'.
+            </summary>
+      <returns>
+      </returns>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Rectangle.Left">
+      <summary>
+            The left position in points.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Rectangle.Bottom">
+      <summary>
+            The bottom position in points.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Rectangle.Width">
+      <summary>
+            The rectangle width in points.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.Rectangle.Height">
+      <summary>
+            The rectangle height in points.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.DocumentInfo">
+      <summary>
+            Document Info for the document like Author, Title and Subject.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Author">
+      <summary>
+            The person who authored this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Title">
+      <summary>
+            Title of this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Subject">
+      <summary>
+            Subject of this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Keywords">
+      <summary>
+            Keywords of this document.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Creator">
+      <summary>
+            The application that created this document before it was converted to PDF (this is your application).
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.Producer">
+      <summary>
+            The component or application that created this document (this component after it is written).
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.CreationDate">
+      <summary>
+            The date this PDF was originally created.
+            </summary>
+    </member>
+    <member name="P:TallComponents.PDF.Rasterizer.DocumentInfo.LastModifiedDate">
+      <summary>
+            The date this PDF was last modified.
+            </summary>
+    </member>
+    <member name="T:TallComponents.PDF.Rasterizer.UpdatedEventArgs">
+      <summary>
+            The UpdatedEventArgs event data.
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.JavaScriptException">
+      <summary>
+            JavaScript exception class
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.SyntaxError">
+      <summary>
+            The exception thrown when a syntax error occurs.
+            </summary>
+    </member>
+    <member name="P:TallComponents.JavaScript.SyntaxError.Line">
+      <summary>
+            The line where the error occured.
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.ReferenceError">
+      <summary>
+            The exception thrown when a reference error occurs.
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.UriError">
+      <summary>
+            The exception thrown when a URI error occurs.
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.TypeError">
+      <summary>
+            The exception thrown when a type error occurs.
+            </summary>
+    </member>
+    <member name="T:TallComponents.JavaScript.RangeError">
+      <summary>
+            The exception thrown when a range error occurs.
+            </summary>
+    </member>
+  </members>
+</doc>

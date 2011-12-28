@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "mod_Freight", "mod_Freight\mod_Freight.vbproj", "{B69B1411-94A1-48D7-BF7F-D9C0298754B2}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B69B1411-94A1-48D7-BF7F-D9C0298754B2}.Debug|x86.ActiveCfg = Debug|x86
+		{B69B1411-94A1-48D7-BF7F-D9C0298754B2}.Debug|x86.Build.0 = Debug|x86
+		{B69B1411-94A1-48D7-BF7F-D9C0298754B2}.Release|x86.ActiveCfg = Release|x86
+		{B69B1411-94A1-48D7-BF7F-D9C0298754B2}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
