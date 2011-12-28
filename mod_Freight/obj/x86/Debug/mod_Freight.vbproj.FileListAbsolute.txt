@@ -1356,3 +1356,10 @@ D:\SAP-Project\Dec\CompletePrj\23-12-2011\23-12-2011\FMSProject\mod_Freight\obj\
 D:\SAP-Project\Dec\CompletePrj\23-12-2011\23-12-2011\FMSProject\mod_Freight\obj\x86\Debug\ResGen.read.1.tlog
 D:\SAP-Project\Dec\CompletePrj\23-12-2011\23-12-2011\FMSProject\mod_Freight\obj\x86\Debug\GenerateResource-ResGen.write.1.tlog
 D:\SAP-Project\Dec\CompletePrj\23-12-2011\23-12-2011\FMSProject\mod_Freight\obj\x86\Debug\ResGen.write.1.tlog
+F:\Project Respo\FMS Main Proj\mod_Freight\bin\Debug\mod_Freight.exe.config
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\Interop.SAPbobsCOM.dll
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\Interop.SAPbouiCOM.dll
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\mod_Freight.vbproj.ResolveComReference.cache
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\mod_Freight.exe
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\mod_Freight.xml
+F:\Project Respo\FMS Main Proj\mod_Freight\obj\x86\Debug\mod_Freight.pdb
